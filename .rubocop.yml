@@ -1,0 +1,86 @@
+inherit_from: .rubocop_todo.yml
+
+AllCops:
+  # Rubocop doesn't support 2.0, so we'll use the minimum available
+  TargetRubyVersion: 2.3
+
+Layout/FirstHashElementIndentation:
+  EnforcedStyle: consistent
+
+Metrics/AbcSize:
+  Exclude:
+    - "spec/**/*.rb"
+
+Metrics/BlockLength:
+  Exclude:
+    - "spec/**/*.rb"
+
+Metrics/ClassLength:
+  Exclude:
+    - "spec/**/*.rb"
+
+Metrics/CyclomaticComplexity:
+  Exclude:
+    - "spec/**/*.rb"
+
+Metrics/LineLength:
+  Exclude:
+    - "spec/**/*.rb"
+
+Metrics/MethodLength:
+  Exclude:
+    - "spec/**/*.rb"
+
+Metrics/PerceivedComplexity:
+  Exclude:
+    - "spec/**/*.rb"
+
+Naming/FileName:
+  Exclude:
+    - lib/dodgeball-ruby.rb # Gem name, added for easier Gemfile usage
+
+Naming/PredicateName:
+  AllowedMethods:
+    - is_requesting? # Can't be renamed, backwards compatibility
+
+Style/BlockDelimiters:
+  Exclude:
+    - "spec/**/*"
+
+Style/BracesAroundHashParameters:
+  Enabled: false
+
+Style/DateTime:
+  Exclude:
+    - "spec/**/*.rb"
+
+Style/Documentation:
+  Enabled: false
+
+Style/FormatString:
+  EnforcedStyle: percent
+
+# Allow one-liner functions to be wrapped in conditionals rather
+# than forcing a guard clause
+Style/GuardClause:
+  MinBodyLength: 2
+
+Style/HashSyntax:
+  EnforcedStyle: hash_rockets
+  Exclude:
+    - "spec/**/*.rb"
+
+Style/ModuleFunction:
+  Enabled: false
+
+Style/MutableConstant:
+  Enabled: false
+
+Style/NumericLiterals:
+  MinDigits: 6
+
+Style/ParallelAssignment:
+  Enabled: false
+
+Style/PreferredHashMethods:
+  EnforcedStyle: verbose
