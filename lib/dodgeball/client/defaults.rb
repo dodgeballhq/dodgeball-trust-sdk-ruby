@@ -19,9 +19,12 @@ module Dodgeball
         RETRIES = 10.freeze
 
         SECRET_KEY_HEADER = 'Dodgeball-Secret-Key'.freeze
+        SESSION_ID_HEADER = 'Dodgeball-Session-Id'.freeze
         SOURCE_ID_HEADER = 'Dodgeball-Source-Id'.freeze
+        SOURCE_TOKEN_HEADER = 'Dodgeball-Source-Token'.freeze
         VERIFICATION_ID_HEADER = 'Dodgeball-Verification-Id'.freeze
         CUSTOM_SOURCE_ID_HEADER = 'Dodgeball-Custom-Source-Id'.freeze
+        CUSTOMER_ID_HEADER = 'Dodgeball-Customer-Id'.freeze
       end
 
       module BackoffPolicy
