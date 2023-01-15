@@ -37,32 +37,40 @@ module Dodgeball
       check_write_key!
     end
 
-    # Verifies an event and executes a workflow
+    # Creates a checkpoint activity
     #
     # @param [Hash] attrs
     #
-    # @option attrs [Hash] :workflow Any input to pass to the workflow (required)
-    # @option attrs [String] :dodgeball_id ID of the user from the client (required)
-    # @option attrs [String] :verification_id if there was a previous verification executed in the client (optional)
-    # @option attrs [Hash] :options Options to pass to the workflow (optional)
-    def verify(workflow, dodgeball_id, verification_id=nil, options=nil)
-      raise ArgumentError.new('No workflow provided') unless workflow
-      raise ArgumentError.new('No dodgeball_id provided') unless dodgeball_id
-      request_headers={}
+    # @option attrs [String] :checkpoint_name Name of the checkpoint to call (required)
+    # @option attrs [Hash] :event The event to send to the checkpoint (required)
+    # @option attrs [String] :source_token A Dodgeball generated token representing the device making the request
+    # @option attrs [String] :user_id A unique identifier for the user making the request
+    # @option attrs [String] :session_id The current session ID of the request (required)
+    # @option attrs [String] :verification_id If a previous verification was performed on this request, pass it in here
+    #
+    # @return [Dodgeball::Client::Response]
+    def checkpoint(checkpoint_name, event, source_token, user_id = nil, session_id = nil, verification_id = nil)
+      raise ArgumentError, 'No checkpoint provided' unless checkpoint_name
+      raise ArgumentError, 'No event provided' unless event
+      raise ArgumentError, 'Event is missing required property: ip' unless event.has_key?(:ip)
+      raise ArgumentError, 'No session provided' unless session_id
+
+      request_headers = {}
       request_headers[Defaults::Request::VERIFICATION_ID_HEADER] = verification_id if verification_id
-      request_headers[Defaults::Request::SOURCE_ID_HEADER] = dodgeball_id
-      body = {event: workflow, options: options}
-      res=execute_request('verify', body, request_headers)
+      request_headers[Defaults::Request::SOURCE_TOKEN_HEADER] = source_token
+      request_headers[Defaults::Request::SESSION_ID_HEADER] = session_id
+      request_headers[Defaults::Request::USER_ID_HEADER] = user_id if user_id
+      body = { :event => { :type => checkpoint_name, **event }, :options => options }
+      res = execute_request('checkpoint', body, request_headers)
       res
     end
-
 
     private
 
     # private: Executes a request with common code to handle results.
     #
     def execute_request(request_function, body, request_specific_headers)
-      path=generate_path(request_function)
+      path = generate_path(request_function)
       res = Request.new(:dodgeball_api_url => @dodgeball_api_url, :ssl => @ssl).post(@write_key, path, body, request_specific_headers)
       @on_error.call(res.status, res.response_body) unless res.status == 200
       res
