@@ -60,7 +60,7 @@ module Dodgeball
       request_headers[Defaults::Request::VERIFICATION_ID_HEADER] = verification_id if verification_id
       request_headers[Defaults::Request::SOURCE_TOKEN_HEADER] = source_token if source_token
       request_headers[Defaults::Request::USER_ID_HEADER] = user_id if user_id
-      body = { :event => { :type => checkpoint_name, **event }, :options => options }
+      body = { :event => { :type => checkpoint_name, **event } }
       res = execute_request('checkpoint', body, request_headers)
       res
     end
