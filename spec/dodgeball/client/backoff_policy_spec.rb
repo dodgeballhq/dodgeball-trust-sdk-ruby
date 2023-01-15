@@ -36,10 +36,10 @@ module Dodgeball
 
           let(:options) do
             {
-              min_timeout_ms: min_timeout_ms,
-              max_timeout_ms: max_timeout_ms,
-              multiplier: multiplier,
-              randomization_factor: randomization_factor
+              :min_timeout_ms => min_timeout_ms,
+              :max_timeout_ms => max_timeout_ms,
+              :multiplier => multiplier,
+              :randomization_factor => randomization_factor
             }
           end
 
@@ -70,10 +70,10 @@ module Dodgeball
       describe '#next_interval' do
         subject {
           described_class.new(
-            min_timeout_ms: 1000,
-            max_timeout_ms: 10000,
-            multiplier: 2,
-            randomization_factor: 0.5
+            :min_timeout_ms => 1000,
+            :max_timeout_ms => 10000,
+            :multiplier => 2,
+            :randomization_factor => 0.5
           )
         }
 

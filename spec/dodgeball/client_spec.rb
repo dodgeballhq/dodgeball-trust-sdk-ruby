@@ -5,7 +5,7 @@ require 'spec_helper'
 module Dodgeball
   class Client
     describe Client do
-      let(:client) { Dodgeball::Client.new(write_key: WRITE_KEY, dodgeball_api_url: URI, stub: true) }
+      let(:client) { Dodgeball::Client.new(:write_key => WRITE_KEY, :dodgeball_api_url => URI, :stub => true) }
 
       describe '#verify' do
         it 'errors without an event' do
@@ -13,17 +13,17 @@ module Dodgeball
         end
 
         it 'errors without source id' do
-          expect { client.verify(VERIFY_EVENT_DATA,nil,VERIFICATION_ID) }.to raise_error(ArgumentError)
+          expect { client.verify(VERIFY_EVENT_DATA, nil, VERIFICATION_ID) }.to raise_error(ArgumentError)
         end
 
         it 'does not error with only the required options' do
           expect do
-            client.verify(VERIFY_EVENT_DATA,SOURCE_ID)
+            client.verify(VERIFY_EVENT_DATA, SOURCE_ID)
           end.to_not raise_error
         end
 
         it 'does not error when given string keys' do
-          expect { client.verify(Utils.stringify_keys(VERIFY_EVENT_DATA),SOURCE_ID)}.to_not raise_error
+          expect { client.verify(Utils.stringify_keys(VERIFY_EVENT_DATA), SOURCE_ID) }.to_not raise_error
         end
       end
 

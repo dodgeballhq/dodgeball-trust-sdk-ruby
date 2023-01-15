@@ -65,15 +65,14 @@ module Dodgeball
           let(:dodgeball_api_url) { 'http://localhost:3000' }
           let(:options) do
             {
-              retries: retries,
-              backoff_policy: backoff_policy,
-              host: host,
-              port: port
+              :retries => retries,
+              :backoff_policy => backoff_policy,
+              :host => host,
+              :port => port
             }
           end
 
           subject { described_class.new(options) }
-
 
           it 'sets passed in retries' do
             expect(subject.instance_variable_get(:@retries)).to eq(retries)
@@ -142,8 +141,8 @@ module Dodgeball
             let(:retries) { 4 }
             let(:backoff_policy) { FakeBackoffPolicy.new([1000, 1000, 1000]) }
             subject {
-              described_class.new(retries: retries,
-                                  backoff_policy: backoff_policy)
+              described_class.new(:retries => retries,
+                                  :backoff_policy => backoff_policy)
             }
 
             it 'retries the request' do
@@ -161,7 +160,7 @@ module Dodgeball
             let(:body) { body }
             let(:retries) { 4 }
             let(:backoff) { 1 }
-            subject { described_class.new(retries: retries, backoff: backoff) }
+            subject { described_class.new(:retries => retries, :backoff => backoff) }
 
             it 'does not retry the request' do
               expect(subject)
@@ -180,7 +179,7 @@ module Dodgeball
 
           context 'request results in errorful response' do
             let(:error) { 'this is an error' }
-            let(:response_body) { { error: error }.to_json }
+            let(:response_body) { { :error => error }.to_json }
           end
 
           context 'a request returns a failure status code' do
@@ -193,7 +192,6 @@ module Dodgeball
             it_behaves_like('non-retried request', 404, '{}')
             it_behaves_like('non-retried request', 400, '{}')
           end
-
         end
       end
     end
