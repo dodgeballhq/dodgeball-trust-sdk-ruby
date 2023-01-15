@@ -10,7 +10,7 @@ module Dodgeball
       #
       def initialize(status = 200, response_body = nil)
         @status = status
-        @response_body  = response_body
+        @response_body = response_body
       end
     end
   end

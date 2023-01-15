@@ -18,7 +18,6 @@ module Dodgeball
       include Dodgeball::Client::Utils
       include Dodgeball::Client::Logging
 
-      
       # public: Creates a new request object to send dodgeball api request
       #
       def initialize(options = {})
@@ -42,13 +41,11 @@ module Dodgeball
         @http = http
       end
 
-
       # public: Posts the write key and path to the API.
       #
       # returns - Response of the status and error if it exists
-      def post(write_key, path, request_body, request_specific_headers=nil)
-
-       last_response, exception = retry_with_backoff(@retries) do
+      def post(write_key, path, request_body, request_specific_headers = nil)
+        last_response, exception = retry_with_backoff(@retries) do
           status_code, response_body = send_request(write_key, path, request_body, request_specific_headers)
           should_retry = should_retry_request?(status_code, response_body)
           logger.debug("Response status code: #{status_code}")
@@ -57,7 +54,7 @@ module Dodgeball
           [Response.new(status_code, response_body), should_retry]
         end
 
-        if exception      
+        if exception
           logger.error(exception.message)
           puts "E #{exception.message}"
           exception.backtrace.each { |line| logger.error(line) }
@@ -112,13 +109,12 @@ module Dodgeball
 
       # Sends a request to the path, returns [status_code, body]
       def send_request(write_key, path, body, request_specific_headers)
-
         payload = JSON.generate(body) if body
-        
-        request_headers =(@headers || {}).merge(request_specific_headers || {})
+
+        request_headers = (@headers || {}).merge(request_specific_headers || {})
         request_headers[SECRET_KEY_HEADER] = write_key
         request = Net::HTTP::Post.new(path, request_headers)
-        
+
         if self.class.stub
           logger.debug "stubbed request to #{path}: " \
             "write key = #{write_key}, payload = #{payload}"
