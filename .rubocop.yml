@@ -23,7 +23,7 @@ Metrics/CyclomaticComplexity:
   Exclude:
     - "spec/**/*.rb"
 
-Metrics/LineLength:
+Layout/LineLength:
   Exclude:
     - "spec/**/*.rb"
 
