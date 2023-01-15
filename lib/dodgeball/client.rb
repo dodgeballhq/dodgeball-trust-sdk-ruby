@@ -56,12 +56,36 @@ module Dodgeball
       raise ArgumentError, 'No session provided' unless session_id
 
       request_headers = {}
-      request_headers[Defaults::Request::VERIFICATION_ID_HEADER] = verification_id if verification_id
-      request_headers[Defaults::Request::SOURCE_TOKEN_HEADER] = source_token
       request_headers[Defaults::Request::SESSION_ID_HEADER] = session_id
+      request_headers[Defaults::Request::VERIFICATION_ID_HEADER] = verification_id if verification_id
+      request_headers[Defaults::Request::SOURCE_TOKEN_HEADER] = source_token if source_token
       request_headers[Defaults::Request::USER_ID_HEADER] = user_id if user_id
       body = { :event => { :type => checkpoint_name, **event }, :options => options }
       res = execute_request('checkpoint', body, request_headers)
+      res
+    end
+
+    # Track an event
+    #
+    # @param [Hash] attrs
+    #
+    # @option attrs [Hash] :event The event to track (required)
+    # @option attrs [String] :source_token A Dodgeball generated token representing the device making the request
+    # @option attrs [String] :user_id A unique identifier for the user making the request
+    # @option attrs [String] :session_id The current session ID of the request (required)
+    #
+    # @return [Dodgeball::Client::Response]
+    def track(event, source_token, user_id = nil, session_id = nil)
+      raise ArgumentError, 'No event provided' unless event
+      raise ArgumentError, 'Event is missing required property: type' unless event.has_key?(:type)
+      raise ArgumentError, 'No session provided' unless session_id
+
+      request_headers = {}
+      request_headers[Defaults::Request::SESSION_ID_HEADER] = session_id
+      request_headers[Defaults::Request::SOURCE_TOKEN_HEADER] = source_token if source_token
+      request_headers[Defaults::Request::USER_ID_HEADER] = user_id if user_id
+      body = { **event }
+      res = execute_request('track', body, request_headers)
       res
     end
 
