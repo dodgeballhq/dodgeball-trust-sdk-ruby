@@ -21,7 +21,7 @@ options = {
   sync: true
 }.freeze
 
-client.verify(
+client.checkpoint(
   workflow,
   '7fe92d98-56c1-4811-afcd-19ee59638de4',
   '835a4bde-aab1-490b-8941-a4ae84423bc7',
