@@ -8,7 +8,7 @@ require 'dodgeball/client/backoff_policy'
 require 'net/http'
 require 'net/https'
 require 'json'
-require 'pry'
+# require 'pry'
 require 'uri'
 
 module Dodgeball
