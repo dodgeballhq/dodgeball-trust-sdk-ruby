@@ -49,7 +49,7 @@ module Dodgeball
     # @option attrs [String] :verification_id If a previous verification was performed on this request, pass it in here
     #
     # @return [Dodgeball::Client::Response]
-    def checkpoint(checkpoint_name, event, source_token, user_id = nil, session_id = nil, verification_id = nil)
+    def checkpoint(checkpoint_name, event, source_token, user_id = nil, session_id = nil, verification_id = nil, options={ "options": { "sync": false, "timeout": 100, "webhook": "" } })
       raise ArgumentError, 'No checkpoint provided' unless checkpoint_name
       raise ArgumentError, 'No event provided' unless event
       raise ArgumentError, 'Event is missing required property: ip' unless event.has_key?(:ip)
@@ -61,7 +61,7 @@ module Dodgeball
       request_headers[Defaults::Request::SOURCE_TOKEN_HEADER] = source_token if source_token
       request_headers[Defaults::Request::USER_ID_HEADER] = user_id if user_id
       event[:data] = {} unless event.key?(:data)
-      body = { :event => { :type => checkpoint_name, **event } }
+      body = { :event => { :type => checkpoint_name, **event, **options } }
       res = execute_request('checkpoint', body, request_headers)
       res
     end
@@ -76,28 +76,26 @@ module Dodgeball
     # @option attrs [String] :session_id The current session ID of the request (required)
     #
     # @return [Dodgeball::Client::Response]
-    def track(event, source_token, user_id = nil, session_id = nil)
+    def track(event, source_token, user_id = nil, session_id = nil, options={ "options": { "sync": false, "timeout": 100, "webhook": "" } })
       raise ArgumentError, 'No event provided' unless event
       raise ArgumentError, 'Event is missing required property: type' unless event.has_key?(:type)
       raise ArgumentError, 'No session provided' unless session_id
-
+    
       request_headers = {}
       request_headers[Defaults::Request::SESSION_ID_HEADER] = session_id
       request_headers[Defaults::Request::SOURCE_TOKEN_HEADER] = source_token if source_token
       request_headers[Defaults::Request::USER_ID_HEADER] = user_id if user_id
-      body = { **event }
+      body = { **event, **options }
       res = execute_request('track', body, request_headers)
       res
     end
-
+    
     private
-
+    
     # private: Executes a request with common code to handle results.
     #
     def execute_request(request_function, body, request_specific_headers)
       path = generate_path(request_function)
-      default_options = { "options": { "sync": false, "timeout": 100, "webhook": "" } }
-      body.merge!(default_options) { |_key, v1, _v2| v1 }
       res = Request.new(:dodgeball_api_url => @dodgeball_api_url, :ssl => @ssl).post(@write_key, path, body, request_specific_headers)
       @on_error.call(res.status, res.response_body) unless res.status == 200
       res
