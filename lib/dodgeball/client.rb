@@ -49,7 +49,7 @@ module Dodgeball
     # @option attrs [String] :verification_id If a previous verification was performed on this request, pass it in here
     #
     # @return [Dodgeball::Client::Response]
-    def checkpoint(checkpoint_name, event, source_token, user_id = nil, session_id = nil, verification_id = nil, options={ "options": { "sync": false, "timeout": 100, "webhook": "" } })
+    def checkpoint(checkpoint_name, event, source_token, user_id = nil, session_id = nil, verification_id = nil)
       raise ArgumentError, 'No checkpoint provided' unless checkpoint_name
       raise ArgumentError, 'No event provided' unless event
       raise ArgumentError, 'Event is missing required property: ip' unless event.has_key?(:ip)
@@ -61,7 +61,7 @@ module Dodgeball
       request_headers[Defaults::Request::SOURCE_TOKEN_HEADER] = source_token if source_token
       request_headers[Defaults::Request::CUSTOMER_ID_HEADER] = user_id if user_id
       event[:data] = {} unless event.key?(:data)
-      body = { :event => { :type => checkpoint_name, **event, **options } }
+      body = { :event => { :type => checkpoint_name, **event } }
       res = execute_request('checkpoint', body, request_headers)
       res
     end
@@ -76,7 +76,7 @@ module Dodgeball
     # @option attrs [String] :session_id The current session ID of the request (required)
     #
     # @return [Dodgeball::Client::Response]
-    def event(event, source_token, user_id = nil, session_id = nil, options={ "options": { "sync": false, "timeout": 100, "webhook": "" } })
+    def event(event, source_token, user_id = nil, session_id = nil)
       raise ArgumentError, 'No event provided' unless event
       raise ArgumentError, 'Event is missing required property: type' unless event.has_key?(:type)
       raise ArgumentError, 'No session provided' unless session_id
@@ -85,7 +85,7 @@ module Dodgeball
       request_headers[Defaults::Request::SESSION_ID_HEADER] = session_id
       request_headers[Defaults::Request::SOURCE_TOKEN_HEADER] = source_token if source_token
       request_headers[Defaults::Request::CUSTOMER_ID_HEADER] = user_id if user_id
-      body = { **event, **options }
+      body = { **event }
       res = execute_request('track', body, request_headers)
       res
     end
