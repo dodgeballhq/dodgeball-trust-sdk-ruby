@@ -34,6 +34,7 @@ module Dodgeball
         uri = URI(options[:dodgeball_api_url] || DODGEBALL_API_URL)
 
         http = Net::HTTP.new(uri.host, uri.port)
+        http.set_debug_output($stdout)
         http.use_ssl = options[:ssl]
         http.read_timeout = DEFAULT_READ_TIMEOUT
         http.open_timeout = DEFAULT_OPEN_TIMEOUT

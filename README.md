@@ -61,7 +61,7 @@ post '/api/orders' do
     },
     source_token: request.env['X-DODGEBALL-SOURCE-TOKEN'], # Obtained from the Dodgeball Client SDK, represents the device making the request
     session_id: session[:id],
-    user_id: session[:user_id],
+    customer_id: session[:customer_id],
     verification_id: request.env['X-DODGEBALL-VERIFICATION-ID']
   )
 
@@ -130,7 +130,7 @@ Checkpoints represent key moments of risk in an application and at the core of h
 | `event[:data]`    | `false`  | A hash containing arbitrary data to send in to the checkpoint.                                                                                                                 |
 | `source_token`    | `false`  | A Dodgeball generated token representing the device making the request. Obtained from the [Dodgeball Trust Client SDK](https://npmjs.com/package/@dodgeball/trust-sdk-client). |
 | `session_id`      | `true`   | The current session ID of the request.                                                                                                                                         |
-| `user_id`         | `false`  | When you know the ID representing the user making the request in your database (ie after registration), pass it in here. Otherwise, leave it as `nil`.                         |
+| `customer_id`         | `false`  | When you know the ID representing the user making the request in your database (ie after registration), pass it in here. Otherwise, leave it as `nil`.                         |
 | `verification_id` | `false`  | If a previous verification was performed on this request, pass it in here. See the [useVerification](#useverification) section below for more details.                         |
 
 ### Example
@@ -153,7 +153,7 @@ checkpoint_response = dodgeball.checkpoint(
   },
   source_token: "abc123...", # Obtained from the Dodgeball Client SDK, represents the device making the request
   session_id: "session_def456", # The current session ID of the request
-  user_id: "user_12345", # When you know the ID representing the user making the request in your database (ie after registration), pass it in here. Otherwise leave it as nil.
+  customer_id: "user_12345", # When you know the ID representing the user making the request in your database (ie after registration), pass it in here. Otherwise leave it as nil.
   verification_id: "def456" # Optional, if you have a verification ID, you can pass it in here
 )
 
@@ -345,7 +345,7 @@ dodgeball.event(event: {
   },
   source_token: "abc123...", # Obtained from the Dodgeball Client SDK, represents the device making the request
   session_id: "session_def456", # The current session ID of the request
-  user_id: "user_12345" # When you know the ID representing the user making the request in your database (ie after registration), pass it in here. Otherwise leave it blank.
+  customer_id: "user_12345" # When you know the ID representing the user making the request in your database (ie after registration), pass it in here. Otherwise leave it blank.
 )
 
 ```
@@ -357,7 +357,7 @@ dodgeball.event(event: {
 | `event.data`   | `false`  | Object containing arbitrary data to track.                                                                                                                                     |
 | `source_token` | `false`  | A Dodgeball generated token representing the device making the request. Obtained from the [Dodgeball Trust Client SDK](https://npmjs.com/package/@dodgeball/trust-sdk-client). |
 | `session_id`   | `true`   | The current session ID of the request.                                                                                                                                         |
-| `user_id`      | `false`  | When you know the ID representing the user making the request in your database (ie after registration), pass it in here. Otherwise leave it blank.                             |
+| `customer_id`      | `false`  | When you know the ID representing the user making the request in your database (ie after registration), pass it in here. Otherwise leave it blank.                             |
 
 ## Contact Us
 
