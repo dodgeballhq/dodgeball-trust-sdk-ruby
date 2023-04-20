@@ -39,7 +39,7 @@ class TestDodgeballClient < Minitest::Test
     assert_equal true, JSON.parse(res.response_body)["success"]
   end
 
-  def test_track
+  def test_event
     client = Dodgeball::Client.new({
       stub: false,  
       write_key: 'SECRET_KEY',
@@ -50,21 +50,21 @@ class TestDodgeballClient < Minitest::Test
 
     # Test case: Missing event
     assert_raises ArgumentError do
-      client.track(nil, 'SOURCE_TOKEN', nil, 'SESSION_ID')
+      client.event(nil, 'SOURCE_TOKEN', nil, 'SESSION_ID')
     end
 
     # Test case: Missing event.type
     assert_raises ArgumentError do
-      client.track({ :ip => '127.0.0.1' }, 'SOURCE_TOKEN', nil, nil)
+      client.event({ :ip => '127.0.0.1' }, 'SOURCE_TOKEN', nil, nil)
     end
 
     # Test case: Missing session_id
     assert_raises ArgumentError do
-      client.track({ :ip => '127.0.0.1' }, 'SOURCE_TOKEN', nil, nil)
+      client.event({ :ip => '127.0.0.1' }, 'SOURCE_TOKEN', nil, nil)
     end
 
     # Test case: Successful request
-    res = client.track({ :ip => '127.0.0.1', :type => 'TYPE' }, 'SOURCE_TOKEN', nil, 'SESSION_ID')
+    res = client.event({ :ip => '127.0.0.1', :type => 'TYPE' }, 'SOURCE_TOKEN', nil, 'SESSION_ID')
     assert_includes [200, 201], res.status
     assert_equal true, JSON.parse(res.response_body)["success"]
   end

@@ -66,7 +66,7 @@ module Dodgeball
       res
     end
 
-    # Track an event
+    # Send a server-side event to track
     #
     # @param [Hash] attrs
     #
@@ -76,7 +76,7 @@ module Dodgeball
     # @option attrs [String] :session_id The current session ID of the request (required)
     #
     # @return [Dodgeball::Client::Response]
-    def track(event, source_token, user_id = nil, session_id = nil, options={ "options": { "sync": false, "timeout": 100, "webhook": "" } })
+    def event(event, source_token, user_id = nil, session_id = nil, options={ "options": { "sync": false, "timeout": 100, "webhook": "" } })
       raise ArgumentError, 'No event provided' unless event
       raise ArgumentError, 'Event is missing required property: type' unless event.has_key?(:type)
       raise ArgumentError, 'No session provided' unless session_id

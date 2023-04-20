@@ -323,14 +323,14 @@ Sometimes additional input is required from the user before making a determinati
 
 **Important Note:** To prevent replay attacks, each verification ID can only be passed to `verification_id` once.
 
-### Track an Event
+### Send a server-side event to track
 
 ---
 
-You can track additional information about a user's journey by submitting tracking events from your server. This information will be added to the user's profile and is made available to checkpoints.
+You can store additional information about a user's journey by submitting tracking events from your server. This information will be added to the user's profile and is made available to checkpoints.
 
 ```ruby
-dodgeball.track(event: {
+dodgeball.event(event: {
   type: "EVENT_NAME", # Can be any string you choose
   data: {
     # Arbitrary data to track...
