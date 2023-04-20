@@ -25,7 +25,6 @@ gem install 'dodgeball-trust-sdk-ruby'
 Create an instance of the Client object:
 
 ```ruby
-db_client = Dodgeball::Client.new({write_key: 'WRITE_KEY'})
 client = Dodgeball::Client.new({
   stub: true,
   write_key: 'write_key',
